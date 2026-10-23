@@ -7,18 +7,22 @@ struct ArticleItem: Identifiable {
     let title: String
     let url: String
     let author: String
+    let profileImageURL: URL?
 }
 
 enum APIEndPoint {
     case user
     case article
-    
+    case avatar(userId: Int)
+
     var urlString: String {
         switch self {
         case .user:
             "https://jsonmock.hackerrank.com/api/article_users"
         case .article:
             "https://jsonmock.hackerrank.com/api/articles"
+        case .avatar(let userId):
+            "https://i.pravatar.cc/300?img=\(userId)"
         }
     }
 }
@@ -41,7 +45,8 @@ class ArticleViewModel: ObservableObject {
                                               about: user.about ?? "",
                                               title: article.title ?? article.storyTitle ?? "",
                                               url: article.url ?? "",
-                                              author: article.author))
+                                              author: article.author,
+                                              profileImageURL: URL(string: APIEndPoint.avatar(userId: user.id).urlString)))
                 }
             }
             items = result

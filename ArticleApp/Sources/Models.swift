@@ -17,6 +17,7 @@ struct Response<T: Decodable>: Decodable {
 }
 
 struct User: Decodable {
+    let id: Int
     let username: String
     let about: String?
 }
