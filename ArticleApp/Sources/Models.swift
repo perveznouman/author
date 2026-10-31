@@ -36,3 +36,19 @@ struct Article: Decodable {
         case storyTitle = "story_title"
     }
 }
+
+// Response of https://dummyjson.com/users/{id} (a single object, no "data" wrapper)
+struct UserDetail: Decodable {
+    let firstName: String
+    let lastName: String
+    let age: Int
+    let email: String
+    let phone: String
+    let university: String
+    let address: Address
+
+    struct Address: Decodable {
+        let city: String
+        let country: String
+    }
+}

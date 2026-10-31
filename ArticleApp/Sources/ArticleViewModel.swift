@@ -2,6 +2,7 @@ import Foundation
 
 struct ArticleItem: Identifiable {
     let id = UUID()
+    let userId: Int
     let username: String
     let about: String
     let title: String
@@ -14,6 +15,7 @@ enum APIEndPoint {
     case user
     case article
     case avatar(userId: Int)
+    case userDetail(userId: Int)
 
     var urlString: String {
         switch self {
@@ -23,6 +25,8 @@ enum APIEndPoint {
             "https://jsonmock.hackerrank.com/api/articles"
         case .avatar(let userId):
             "https://i.pravatar.cc/300?img=\(userId)"
+        case .userDetail(let userId):
+            "https://dummyjson.com/users/\(userId)"
         }
     }
 }
@@ -41,7 +45,8 @@ class ArticleViewModel: ObservableObject {
             var result: [ArticleItem] = []
             for article in articles.data {
                 if let user = users.data.first(where: { $0.username == article.author }) {
-                    result.append(ArticleItem(username: user.username,
+                    result.append(ArticleItem(userId: user.id,
+                                              username: user.username,
                                               about: user.about ?? "",
                                               title: article.title ?? article.storyTitle ?? "",
                                               url: article.url ?? "",
